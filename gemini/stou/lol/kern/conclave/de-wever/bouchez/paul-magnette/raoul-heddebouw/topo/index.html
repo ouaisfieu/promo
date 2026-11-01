@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Topo du Kern - Conclave Budgétaire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'marquee': 'marquee 25s linear infinite',
+                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for that dark terminal vibe */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        .glitch-text {
+            text-shadow: 2px 0 red, -2px 0 cyan;
+        }
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 9999;
+            position: absolute;
+            pointer-events: none;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0) 100%);
+            opacity: 0.1;
+            animation: scanline 6s linear infinite;
+        }
+        @keyframes scanline {
+            0% { top: -100px; }
+            100% { top: 100%; }
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-300 font-sans min-h-screen overflow-x-hidden relative flex flex-col">
+    <div class="scanline"></div>
+
+    <!-- Ticker Tape (News Flash) -->
+    <div class="bg-red-600 text-white font-mono text-sm py-1 border-b-2 border-red-800 overflow-hidden relative flex items-center h-8 w-full z-10 shadow-[0_0_15px_rgba(220,38,38,0.5)]">
+        <div class="absolute left-0 bg-red-700 px-3 h-full flex items-center font-bold z-20 shadow-[5px_0_10px_rgba(0,0,0,0.5)]">FLASH INFO</div>
+        <div class="whitespace-nowrap animate-marquee absolute left-24" id="news-ticker">
+            La Super Note a été perdue dans le métro. • Sondage Ipsos : 45% des Belges pensent que le Kern est une marque de bière. • G-L Bouchez annonce un veto sur l'existence même de la TVA. • De Wever cite César et quitte le groupe WhatsApp. • Paul Magnette prépare un livre sur la trahison. • Raoul Hedebouw hurle dans un porte-voix vide. • Les marchés financiers haussent les épaules.
+        </div>
+    </div>
+
+    <header class="p-6 border-b border-slate-800 bg-slate-900/50 backdrop-blur z-10 flex flex-col items-center text-center">
+        <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-500 to-black glitch-text tracking-tighter uppercase">
+            Le Topo du Kern
+        </h1>
+        <p class="mt-2 text-slate-500 font-mono text-xs md:text-sm max-w-2xl break-all">
+            URL: <span class="text-green-400">https://ouaisfieu.github.io/promo/gemini/stou/lol/kern/conclave/de-wever/bouchez/paul-magnette/raoul-heddebouw/topo/</span>
+        </p>
+        <div class="mt-4 flex gap-4">
+            <span class="px-3 py-1 bg-slate-800 text-yellow-500 rounded-full text-xs font-bold border border-yellow-700 shadow-[0_0_10px_rgba(234,179,8,0.2)]">
+                <i class="fas fa-exclamation-triangle mr-1"></i> STATUS: BLOQUÉ
+            </span>
+            <span class="px-3 py-1 bg-slate-800 text-red-500 rounded-full text-xs font-bold border border-red-700 shadow-[0_0_10px_rgba(239,68,68,0.2)]">
+                <i class="fas fa-fire mr-1"></i> URGENCE MACROÉCONOMIQUE: IGNORÉE
+            </span>
+        </div>
+    </header>
+
+    <main class="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full grid gap-8 z-10">
+        
+        <!-- Debt Tracker Widget -->
+        <section class="bg-slate-900 rounded-2xl border border-slate-800 p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-red-900/20 to-transparent pointer-events-none"></div>
+            <div class="z-10">
+                <h2 class="text-slate-400 font-mono text-sm uppercase tracking-widest mb-1">Trou Budgétaire Fédéral (Temps Réel)</h2>
+                <div class="text-5xl md:text-7xl font-mono font-bold text-red-500 tracking-tighter" id="debt-counter">
+                    € 37,200,000,000
+                </div>
+                <p class="text-slate-500 text-xs mt-2 italic">Basé sur un cynisme de 5.8% du PIB. Augmente à chaque fois qu'un politicien tweete.</p>
+            </div>
+            
+            <!-- Statistical Noise Chart (Mocking the polls) -->
+            <div class="flex-shrink-0 w-full md:w-64 h-32 bg-slate-950 rounded-lg border border-slate-800 p-2 flex items-end justify-between gap-1 z-10" id="poll-chart">
+                <!-- Bars generated by JS -->
+            </div>
+        </section>
+
+        <h2 class="text-2xl font-bold border-b border-slate-800 pb-2 flex items-center">
+            <i class="fas fa-users-cog mr-3 text-slate-500"></i> Les Gladiateurs de l'Absurde (Le Horse Race)
+        </h2>
+
+        <!-- Character Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- De Wever -->
+            <div class="bg-slate-900 rounded-xl border border-yellow-900/50 p-5 hover:bg-slate-800 transition-colors shadow-[0_4px_20px_rgba(0,0,0,0.5)] group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="w-12 h-12 rounded-full bg-yellow-900 flex items-center justify-center text-yellow-400 text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <span class="text-xs font-mono px-2 py-1 bg-slate-950 rounded text-slate-400">Formateur</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-1">Bart De Wever</h3>
+                <p class="text-sm text-yellow-500 font-medium mb-3">N-VA • Le "Staatsman" exaspéré</p>
+                <div class="space-y-2 text-sm text-slate-400 border-t border-slate-800 pt-3">
+                    <p><strong class="text-slate-300">Statut tactique:</strong> Prépare sa menace de démission n°47.</p>
+                    <p><strong class="text-slate-300">Arme préférée:</strong> La "Super Note" et des citations en latin.</p>
+                    <div class="mt-2 w-full bg-slate-950 rounded-full h-2">
+                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 85%" title="Niveau de patience"></div>
+                    </div>
+                    <p class="text-xs text-right mt-1">Patience restante: 15%</p>
+                </div>
+            </div>
+
+            <!-- Bouchez -->
+            <div class="bg-slate-900 rounded-xl border border-blue-900/50 p-5 hover:bg-slate-800 transition-colors shadow-[0_4px_20px_rgba(0,0,0,0.5)] group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="w-12 h-12 rounded-full bg-blue-900 flex items-center justify-center text-blue-400 text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <span class="text-xs font-mono px-2 py-1 bg-red-900/50 text-red-400 border border-red-800 rounded animate-pulse-fast">VETO</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-1">Georges-Louis B.</h3>
+                <p class="text-sm text-blue-400 font-medium mb-3">MR • Le Spin Doctor de lui-même</p>
+                <div class="space-y-2 text-sm text-slate-400 border-t border-slate-800 pt-3">
+                    <p><strong class="text-slate-300">Statut tactique:</strong> Tweet depuis les toilettes du Kern.</p>
+                    <p><strong class="text-slate-300">Arme préférée:</strong> Le refus catégorique de toute augmentation d'impôt.</p>
+                    <div class="mt-2 w-full bg-slate-950 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full" style="width: 100%" title="Niveau d'Ego"></div>
+                    </div>
+                    <p class="text-xs text-right mt-1">Niveau d'Ego: 110% (débordement)</p>
+                </div>
+            </div>
+
+            <!-- Magnette -->
+            <div class="bg-slate-900 rounded-xl border border-red-900/50 p-5 hover:bg-slate-800 transition-colors shadow-[0_4px_20px_rgba(0,0,0,0.5)] group opacity-75">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="w-12 h-12 rounded-full bg-red-900 flex items-center justify-center text-red-400 text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fab fa-diaspora"></i> <!-- Rose-ish icon -->
+                    </div>
+                    <span class="text-xs font-mono px-2 py-1 bg-slate-950 rounded text-slate-500">Dans l'opposition</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-1">Paul Magnette</h3>
+                <p class="text-sm text-red-500 font-medium mb-3">PS • Le spectre de la gauche</p>
+                <div class="space-y-2 text-sm text-slate-400 border-t border-slate-800 pt-3">
+                    <p><strong class="text-slate-300">Statut tactique:</strong> Regarde le bateau couler en mangeant du pop-corn à Charleroi.</p>
+                    <p><strong class="text-slate-300">Arme préférée:</strong> Préparer l'échec de la coalition Arizona.</p>
+                    <div class="mt-2 w-full bg-slate-950 rounded-full h-2">
+                        <div class="bg-red-500 h-2 rounded-full" style="width: 40%" title="Influence actuelle"></div>
+                    </div>
+                    <p class="text-xs text-right mt-1">Influence actuelle (Fédéral): 40%</p>
+                </div>
+            </div>
+
+            <!-- Hedebouw -->
+            <div class="bg-slate-900 rounded-xl border border-red-700/50 p-5 hover:bg-slate-800 transition-colors shadow-[0_4px_20px_rgba(0,0,0,0.5)] group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="w-12 h-12 rounded-full bg-red-800 flex items-center justify-center text-white text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <span class="text-xs font-mono px-2 py-1 bg-slate-950 rounded text-slate-400">Radical</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-1">Raoul Hedebouw</h3>
+                <p class="text-sm text-red-600 font-medium mb-3">PTB • La métaphore violente</p>
+                <div class="space-y-2 text-sm text-slate-400 border-t border-slate-800 pt-3">
+                    <p><strong class="text-slate-300">Statut tactique:</strong> Dénonce le "Casse du siècle" sur TikTok.</p>
+                    <p><strong class="text-slate-300">Arme préférée:</strong> Hurler "TAX THE RICH" bilinguement.</p>
+                    <div class="mt-2 w-full bg-slate-950 rounded-full h-2">
+                        <div class="bg-red-600 h-2 rounded-full" style="width: 95%" title="Volume sonore"></div>
+                    </div>
+                    <p class="text-xs text-right mt-1">Volume décibels: 140dB (Mortel)</p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Control Panel (Cynical interactions) -->
+        <section class="bg-slate-900/80 border border-slate-700 rounded-2xl p-6 mt-4">
+            <h2 class="text-lg font-mono mb-4 text-slate-300 border-b border-slate-800 pb-2">Actions Stratégiques (News Management)</h2>
+            <div class="flex flex-wrap gap-4">
+                <button onclick="simulateLeak()" class="bg-slate-800 hover:bg-slate-700 text-white border border-slate-600 px-4 py-2 rounded shadow transition-all active:scale-95 flex items-center">
+                    <i class="fas fa-file-export mr-2 text-green-400"></i> Faire Fuiter un Document (Trial Balloon)
+                </button>
+                <button onclick="generateCompromise()" class="bg-slate-800 hover:bg-slate-700 text-white border border-slate-600 px-4 py-2 rounded shadow transition-all active:scale-95 flex items-center">
+                    <i class="fas fa-handshake mr-2 text-blue-400"></i> Négocier un Compromis à la Belge
+                </button>
+                <button onclick="ignoreExperts()" class="bg-slate-800 hover:bg-slate-700 text-white border border-slate-600 px-4 py-2 rounded shadow transition-all active:scale-95 flex items-center">
+                    <i class="fas fa-volume-mute mr-2 text-red-400"></i> Ignorer la Cour des Comptes
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-auto py-6 text-center text-slate-600 text-sm font-mono border-t border-slate-900 bg-slate-950 z-10">
+        <p>Généré dans la pure tradition du <em>horse race journalism</em>. L'expertise macroéconomique a été désactivée pour des raisons scénaristiques.</p>
+        <p class="mt-1 text-slate-700">© 2026 Royaume (Désuni) de Belgique. Ouais fieu.</p>
+    </footer>
+
+    <!-- Custom Modal for Alerts -->
+    <div id="cynical-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex-col items-center justify-center p-4">
+        <div class="bg-slate-900 border border-red-500 rounded-xl p-6 max-w-md w-full shadow-[0_0_30px_rgba(239,68,68,0.3)] transform transition-all scale-95 opacity-0" id="modal-content">
+            <h3 class="text-2xl font-bold text-white mb-2 flex items-center" id="modal-title">
+                <i class="fas fa-exclamation-circle text-red-500 mr-3"></i> Alerte Stratégique
+            </h3>
+            <p class="text-slate-300 font-mono text-sm mb-6" id="modal-body">
+                Message par défaut.
+            </p>
+            <div class="flex justify-end">
+                <button onclick="closeModal()" class="bg-red-900 hover:bg-red-800 text-white px-6 py-2 rounded font-bold transition-colors border border-red-700">
+                    Fermer les yeux
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Debt Counter Logic ---
+        let baseDebt = 37200000000;
+        const debtElement = document.getElementById('debt-counter');
+        
+        function formatMoney(amount) {
+            return '€ ' + amount.toLocaleString('en-US');
+        }
+
+        setInterval(() => {
+            // Debt increases by ~15,000 to 50,000 every 100ms because why not
+            baseDebt += Math.floor(Math.random() * 35000) + 15000;
+            debtElement.innerText = formatMoney(baseDebt);
+            
+            // Occasionally glitch the color for dramatic effect
+            if(Math.random() > 0.95) {
+                debtElement.classList.add('text-red-400');
+                setTimeout(() => debtElement.classList.remove('text-red-400'), 100);
+            }
+        }, 100);
+
+        // --- Polling Chart Logic ---
+        const chartContainer = document.getElementById('poll-chart');
+        function generateBars() {
+            chartContainer.innerHTML = '';
+            // Generate 20 random bars to represent "bruit statistique"
+            for(let i=0; i<20; i++) {
+                const height = Math.floor(Math.random() * 90) + 10; // 10% to 100%
+                const bar = document.createElement('div');
+                bar.className = 'w-full bg-slate-700 rounded-t transition-all duration-500 hover:bg-blue-500';
+                bar.style.height = `${height}%`;
+                chartContainer.appendChild(bar);
+            }
+        }
+        generateBars();
+        setInterval(generateBars, 2000); // Polls change randomly every 2 seconds because margins of error don't matter
+
+        // --- Modal System (Replacing alerts) ---
+        const modal = document.getElementById('cynical-modal');
+        const modalContent = document.getElementById('modal-content');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+
+        function showModal(title, message, iconClass = 'fa-exclamation-circle', iconColor = 'text-red-500') {
+            modalTitle.innerHTML = `<i class="fas ${iconClass} ${iconColor} mr-3"></i> ${title}`;
+            modalBody.innerText = message;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            // Trigger animation
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 200);
+        }
+
+        // --- Interaction Functions ---
+        const leaks = [
+            "Une ligne sur l'annualisation du temps de travail a fuité dans Le Soir. La FGTB prépare des barricades.",
+            "Le malus pension de 5% est dévoilé par De Standaard. Le MR prétend que c'était juste une 'piste de réflexion'.",
+            "La Super Note révèle que les frites seront taxées à 9%. La coalition est au bord de l'implosion totale."
+        ];
+
+        function simulateLeak() {
+            const randomLeak = leaks[Math.floor(Math.random() * leaks.length)];
+            showModal("Fuite Stratégique Réussie", randomLeak, "fa-file-export", "text-green-500");
+            
+            // Add to ticker
+            const ticker = document.getElementById('news-ticker');
+            ticker.innerText = `🚨 NOUVELLE FUITE : ${randomLeak} • ${ticker.innerText}`;
+        }
+
+        function generateCompromise() {
+            showModal(
+                "Compromis à la Belge Généré", 
+                "Après 14 heures de conclave, le Kern a décidé de créer un groupe de travail pour analyser la possibilité d'engager un consultant externe qui étudiera la faisabilité d'une taxe qui ne fâche personne. Coût de l'opération : 2 millions d'euros.",
+                "fa-handshake",
+                "text-blue-500"
+            );
+        }
+
+        function ignoreExperts() {
+            showModal(
+                "Rapport Ignoré avec Succès", 
+                "Le Bureau Fédéral du Plan et la Cour des Comptes ont démontré que la note est mathématiquement irréalisable. Les politiciens ont convenu que les chiffres étaient 'trop déprimants' et les ont jetés à la corbeille pour parler des sondages Ipsos.",
+                "fa-volume-mute",
+                "text-red-500"
+            );
+            // Increase debt massively as a penalty
+            baseDebt += 1500000000; 
+        }
+    </script>
+</body>
+</html>
